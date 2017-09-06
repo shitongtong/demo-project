@@ -15,9 +15,12 @@ public class SpiTest {
         Log log = null;
         ServiceLoader<Log> serviceLoader = ServiceLoader.load(Log.class);
         Iterator<Log> logs = serviceLoader.iterator();
-        if (logs.hasNext()) {
+        while (logs.hasNext()) {
             log = logs.next();
+            log.write("wwww");
         }
-        log.write("wwww");
+        /*for (Log log1 :serviceLoader){
+            log1.write("hhhh");
+        }*/
     }
 }
