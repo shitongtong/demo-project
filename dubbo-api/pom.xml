@@ -5,39 +5,46 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.stt</groupId>
-    <artifactId>netty-socket</artifactId>
+    <artifactId>dubbo-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <netty-version>4.1.15.Final</netty-version>
-        <fastjson.version>1.2.12</fastjson.version>
+        <dubbo.version>2.5.3</dubbo.version>
+        <zkclient.version>0.10</zkclient.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <logback.version>1.2.3</logback.version>
-        <protobuf-java.version>3.4.0</protobuf-java.version>
         <junit-version>4.12</junit-version>
     </properties>
 
     <dependencies>
+        <!-- dubbo -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>${zkclient.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit-version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>${protobuf-java.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
+
         <!-- 日志 s -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -71,4 +78,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

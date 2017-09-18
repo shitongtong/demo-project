@@ -1,6 +1,6 @@
 package cn.stt.nettysocket.demo5.server;
 
-import com.google.protobuf.Timestamp;
+import cn.stt.nettysocket.demo5.protobuf.LoginProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Created by shitongtong on 2017/9/4.
  */
-public class NettyServerHandler extends SimpleChannelInboundHandler<Timestamp> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<LoginProto.Login> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyServerHandler.class);
 
@@ -60,11 +60,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Timestamp> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Timestamp msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginProto.Login msg) throws Exception {
         LOGGER.info("msg={}", msg);
         SocketChannel socketChannel = (SocketChannel) channelHandlerContext.channel();
         String channelId = socketChannel.id().asShortText();
-
+        socketChannel.writeAndFlush(LoginProto.Login.newBuilder().setPhone("hahah").setType(2).build());
         /*BaseMsg baseMsg = JSON.parseObject(msg, BaseMsg.class);
         int type = baseMsg.getType();
         if (type == 2) {

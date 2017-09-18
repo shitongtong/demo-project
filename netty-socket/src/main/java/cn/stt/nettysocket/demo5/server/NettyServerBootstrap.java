@@ -1,6 +1,6 @@
 package cn.stt.nettysocket.demo5.server;
 
-import com.google.protobuf.Timestamp;
+import cn.stt.nettysocket.demo5.protobuf.LoginProto;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -49,7 +49,7 @@ public class NettyServerBootstrap {
             protected void initChannel(SocketChannel socketChannel) throws Exception {
                 socketChannel.pipeline()
                         .addLast(new ProtobufVarint32FrameDecoder())
-                        .addLast(new ProtobufDecoder(Timestamp.getDefaultInstance()))
+                        .addLast(new ProtobufDecoder(LoginProto.Login.getDefaultInstance()))
                         .addLast(new ProtobufVarint32LengthFieldPrepender())
                         .addLast(new ProtobufEncoder())
                         .addLast(new NettyServerHandler());

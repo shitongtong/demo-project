@@ -1,17 +1,16 @@
 package cn.stt.nettysocket.demo5.client;
 
-import com.google.protobuf.Timestamp;
+import cn.stt.nettysocket.demo5.protobuf.LoginProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.ReferenceCountUtil;
 
 /**
  * @Author shitongtong
  * <p>
  * Created by shitongtong on 2017/9/4.
  */
-public class NettyClientHandler extends SimpleChannelInboundHandler<Timestamp> {
+public class NettyClientHandler extends SimpleChannelInboundHandler<LoginProto.Login> {
 
     //利用写空闲发送心跳检测消息
     @Override
@@ -29,8 +28,8 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Timestamp> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Timestamp baseMsg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginProto.Login baseMsg) throws Exception {
         System.out.println("baseMsg==" + baseMsg);
-        ReferenceCountUtil.release(baseMsg);
+//        ReferenceCountUtil.release(baseMsg);
     }
 }

@@ -1,7 +1,6 @@
 package cn.stt.nettysocket.demo5.client;
 
-import cn.stt.nettysocket.demo1.common.Constants;
-import com.google.protobuf.Timestamp;
+import cn.stt.nettysocket.demo5.protobuf.LoginProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -14,7 +13,6 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 
@@ -46,9 +44,9 @@ public class NettyClientBootstrap {
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
                 socketChannel.pipeline()
-                        .addLast(new IdleStateHandler(20, 10, 0))
+//                        .addLast(new IdleStateHandler(20, 10, 0))
                         .addLast(new ProtobufVarint32FrameDecoder())
-                        .addLast(new ProtobufDecoder(Timestamp.getDefaultInstance()))
+                        .addLast(new ProtobufDecoder(LoginProto.Login.getDefaultInstance()))
                         .addLast(new ProtobufVarint32LengthFieldPrepender())
                         .addLast(new ProtobufEncoder())
                         .addLast(new NettyClientHandler());
@@ -61,23 +59,19 @@ public class NettyClientBootstrap {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        Constants.setClientId("001");
-        NettyClientBootstrap bootstrap = new NettyClientBootstrap(19999, "localhost");
-        bootstrap.socketChannel.writeAndFlush(Timestamp.newBuilder().setSeconds(8767868));
 
-        /*LoginMsg loginMsg = new LoginMsg();
-        loginMsg.setPassword("yao1");
-        loginMsg.setUserName("robin");
-        System.out.println(loginMsg);
-        bootstrap.socketChannel.writeAndFlush(loginMsg);
-        while (true) {
-            TimeUnit.SECONDS.sleep(3);
-            AskMsg askMsg = new AskMsg();
-            AskParams askParams = new AskParams();
-            askParams.setAuth("authToken");
-            askMsg.setParams(askParams);
-            bootstrap.socketChannel.writeAndFlush(askMsg);
-        }*/
+
+    public static void main(String[] args) throws InterruptedException {
+        NettyClientBootstrap bootstrap = new NettyClientBootstrap(30000, "localhost");
+//        NettyClientBootstrap bootstrap = new NettyClientBootstrap(30000, "localhost");
+//        bootstrap.socketChannel.writeAndFlush(Timestamp.newBuilder().setSeconds(8767868));
+        bootstrap.socketChannel.writeAndFlush(LoginProto.Login.newBuilder().setPhone("1234511254").setType(2).build());
+//        bootstrap.socketChannel.writeAndFlush(PersonProto.Person.newBuilder().setPhone("dsddsfs").setType(2).build());
+//        bootstrap.socketChannel.writeAndFlush(SocketDemo.Login.newBuilder().setPhone("dsddsfs").setType(2).build());
+//        bootstrap.socketChannel.writeAndFlush(SocketDemo.Login.newBuilder());
+//        bootstrap.socketChannel.writeAndFlush("ssss");
+//        System.out.println(LoginProto.Login.newBuilder().setPhone("dsddsfs").setType(1).build().getSerializedSize());
+//        System.out.println(Timestamp.getDefaultInstance().getSeconds());
+//        System.out.println(PersonProto.Person.getDefaultInstance().getPhone());
     }
 }
