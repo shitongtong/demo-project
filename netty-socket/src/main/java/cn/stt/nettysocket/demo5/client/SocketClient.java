@@ -4,11 +4,15 @@ import cn.stt.nettysocket.demo5.protobuf.LoginProto;
 import cn.stt.nettysocket.demo5.protobuf.SocketDemo;
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
@@ -56,7 +60,7 @@ public class SocketClient {
 
     @Test
     public void send2() throws IOException {
-        Socket socket = new Socket("192.168.1.219", 30000);
+        Socket socket = new Socket("192.168.12.228", 30000);
         LoginProto.Login build = LoginProto.Login.newBuilder().setPhone("13916593205").setType(2).build();
         System.out.println(build.getSerializedSize());
         System.out.println(build.toString().length());
@@ -69,7 +73,7 @@ public class SocketClient {
 
     @Test
     public void send3() throws IOException {
-        Socket socket = new Socket("192.168.1.219", 30000);
+        Socket socket = new Socket("192.168.1.182", 30000);
         SocketDemo.Login build = SocketDemo.Login.newBuilder().setPhone("13916593205").setType(2).build();
         System.out.println(build.getSerializedSize());
         System.out.println(build.toString().length());
@@ -79,4 +83,25 @@ public class SocketClient {
         //4.关闭资源
         socket.close();
     }
+
+    @Test
+    public void send4() throws IOException {
+        ServerSocket server = new ServerSocket(30000);
+        Socket client = server.accept();
+        InputStream inStream = client.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(inStream));
+        StringBuilder sb = new StringBuilder();
+        String info = null;
+        while ((info = br.readLine()) != null) {//循环读取客户端的信息
+            System.out.println("我是服务器，客户端说：" + info);
+            sb.append(info);
+        }
+        System.out.println("sb==" + sb.toString());
+//        LoginProto.Login login = LoginProto.Login.parseDelimitedFrom(inStream);
+//        System.out.println("||" + login.getPhone() + "||" + login.getType() + "||" + login.getReply() + "||");
+        client.shutdownInput();//关闭输入流
+        client.close();
+        server.close();
+    }
+
 }
