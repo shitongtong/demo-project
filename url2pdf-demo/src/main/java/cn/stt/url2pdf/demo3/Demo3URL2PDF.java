@@ -1,6 +1,7 @@
 package cn.stt.url2pdf.demo3;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
@@ -60,6 +61,7 @@ public class Demo3URL2PDF {
 //        String pdfFile = "D:/开源世界旅行手册/开源世界旅行手册ch22s05.pdf";
         String pdfDir = "D:\\开源世界旅行手册\\";
         Demo3URL2PDF.parseURL2PDFFile(pdfDir, url);
+        System.out.println("已生成pdf数量==" + pdfFileList.size());
         mergePDF(pdfDir);
 
         System.out.println("总时间：" + (System.currentTimeMillis() - begin) / 1000 + "秒");
@@ -114,15 +116,20 @@ public class Demo3URL2PDF {
             String href = map.get("href");
 
             Document document = new Document();
-            File pdfFile = new File(pdfDir + "\\开源世界旅行手册子文件\\" + title + ".pdf");
+            File pdfFile = new File(pdfDir + "\\开源世界旅行手册子文件2\\" + title + ".pdf");
             if (!pdfFile.getParentFile().exists()) {
                 pdfFile.getParentFile().mkdirs();
             }
             PdfWriter pdfwriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
             pdfwriter.setViewerPreferences(PdfWriter.HideToolbar);
             document.open();
+            try {
+                XMLWorkerHelper.getInstance().parseXHtml(pdfwriter, document, parse2Stream(html));
+            } catch (IllegalArgumentException e) { //java.lang.IllegalArgumentException: Element not allowed.
+                document.add(new Paragraph("此页 " + url + " 解析异常：java.lang.IllegalArgumentException: Element not allowed."));
+                e.printStackTrace();
+            }
 
-            XMLWorkerHelper.getInstance().parseXHtml(pdfwriter, document, parse2Stream(html));
 
 //        String urlInfo = extractUrlInfo2(url);
 //        XMLWorkerHelper.getInstance().parseXHtml(pdfwriter, document, parse2Stream(urlInfo));
@@ -136,14 +143,15 @@ public class Demo3URL2PDF {
             System.out.println("一次时间：" + (System.currentTimeMillis() - begin) / 1000 + "秒");
 
             pdfFileList.add(pdfFile);
+            System.out.println("href==" + href);
+            System.out.println("titleIndex==" + titleIndex);
             if (StringUtils.isNotBlank(href)) {
                 parseURL2PDFFile(pdfDir, href);
             }
         } catch (Exception e) {
             System.out.println("url==" + url);
-             e.printStackTrace();
+            e.printStackTrace();
         }
-
     }
 
     private static String[] windowsSpecialChars = new String[]{"\\", "/", ":", "*", "?", "\"", "<", ">", "|"};
@@ -166,6 +174,7 @@ public class Demo3URL2PDF {
         System.out.println(s);
     }
 
+    private static int titleIndex = 1000;
 
     /**
      * 根据URL获取网页的内容，返回结果
@@ -175,6 +184,7 @@ public class Demo3URL2PDF {
      * @throws Exception
      */
     public static Map<String, String> extractUrlInfo(String url) {
+        titleIndex++;
         Map<String, String> map = new HashMap<>();
         //报错：Exception in thread "main" org.jsoup.HttpStatusException:HTTP error fetching URL. Status=403, URL=http://blog.csdn.net/u014520797/article/details/50944998/
         //org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
@@ -250,7 +260,7 @@ public class Demo3URL2PDF {
                 }
             }
         }
-        map.put("title", title);
+        map.put("title", titleIndex + title);
         return map;
     }
 
