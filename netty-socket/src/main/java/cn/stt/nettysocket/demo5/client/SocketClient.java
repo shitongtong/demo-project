@@ -76,8 +76,8 @@ public class SocketClient {
     public void send3() throws Exception {
 //        Thread.sleep(1000*60);
         String ip = "192.168.1.219";
-//        ip = "101.132.116.184";
-        ip="106.14.76.62";
+        ip = "101.132.116.184";
+//        ip="106.14.76.62";
         Socket socket = new Socket(ip, 30000);
 //        Thread.sleep(1000*30);
         SocketDemo.Login build = SocketDemo.Login.newBuilder().setPhone("13916593205").setType(2).build();
@@ -188,6 +188,11 @@ public class SocketClient {
         ClientThread clientThread2 = new ClientThread(socket);
         Thread thread2 = new Thread(clientThread2);
         thread2.start();
+    }
+
+    @Test
+    public void send6(){
+
     }
 
 }

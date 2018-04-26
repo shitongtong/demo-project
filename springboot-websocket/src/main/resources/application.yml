@@ -1,0 +1,32 @@
+#应用程序端口配置
+server: 
+  port: 8080
+#  tomcat:
+#    access-log-enabled: true
+
+#日志配置    
+logging:
+#    file: 
+#    path: 
+     config: classpath:logback.xml
+#    level: 
+#        org.springframework.web: ERROR
+#        org.springframework.beans: ERROR
+
+
+spring:
+#  view:
+#    prefix:
+#    suffix:
+#  resources:
+ #   staticLocations:
+  #    -  classpath:/static/
+  freemarker:
+    prefix:
+    suffix: .ftl
+    template-loader-path:
+      -  classpath:/templates/
+    charset: UTF-8
+    requestContextAttribute: rc
+#    cache: false
+#    enabled: true

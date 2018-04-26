@@ -62,10 +62,10 @@ public class NettyClientBootstrap {
 
 
     public static void main(String[] args) throws InterruptedException {
-        NettyClientBootstrap bootstrap = new NettyClientBootstrap(30000, "localhost");
+        NettyClientBootstrap bootstrap = new NettyClientBootstrap(30000, "client.haiketang.net");
 //        NettyClientBootstrap bootstrap = new NettyClientBootstrap(30000, "localhost");
 //        bootstrap.socketChannel.writeAndFlush(Timestamp.newBuilder().setSeconds(8767868));
-        bootstrap.socketChannel.writeAndFlush(LoginProto.Login.newBuilder().setPhone("1234511254").setType(2).build());
+//        bootstrap.socketChannel.writeAndFlush(LoginProto.Login.newBuilder().setPhone("1234511254").setType(2).build());
 //        bootstrap.socketChannel.writeAndFlush(PersonProto.Person.newBuilder().setPhone("dsddsfs").setType(2).build());
 //        bootstrap.socketChannel.writeAndFlush(SocketDemo.Login.newBuilder().setPhone("dsddsfs").setType(2).build());
 //        bootstrap.socketChannel.writeAndFlush(SocketDemo.Login.newBuilder());
